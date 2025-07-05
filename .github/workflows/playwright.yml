@@ -2,10 +2,6 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ dev ] # Trigger on push to the 'dev' branch
-  pull_request:
-    branches: [ dev ] # Trigger on pull request to the 'dev' branch
   schedule:
     # Run every day at 1 AM UTC
     # Learn more about cron syntax: https://docs.github.com/actions/reference/events#schedule
@@ -32,4 +28,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
