@@ -4,8 +4,8 @@ name: Playwright Tests
 on:
   schedule:
     # Run every day at 1 AM UTC
-    # Learn more about cron syntax: https://docs.github.com/actions/reference/events#schedule
     - cron: '0 1 * * *'
+  workflow_dispatch: # Add this line to enable manual trigger
 
 jobs:
   test:

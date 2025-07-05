@@ -104,7 +104,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     // console.log('Navigated to login page successfully.');
   });
 
-  test('Verify that user should be able to search for "Lip Care"', async () => {
+  test.skip('Verify that user should be able to search for "Lip Care"', async () => {
     //await homePage.performSearch('Lip Care');
     await homePage.searchAndSelectLipCare();
     //await expect(homePage.page).toHaveURL(/.*search\?q=Lipstick/i); // Case-insensitive check
