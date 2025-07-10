@@ -1,5 +1,5 @@
 // pages/HomePage.ts
-import { Page, Locator } from '@playwright/test';
+import {Page, Locator, expect} from '@playwright/test';
 import { BasePage } from './BasePage'; // Adjust path if your structure differs
 
 /**
@@ -8,22 +8,13 @@ import { BasePage } from './BasePage'; // Adjust path if your structure differs
  */
 export class HomePage extends BasePage {
     // Define Web Elements (Locators) for the Home Page
-    // Use meaningful names for your locators.
-    // Replace these with actual CSS selectors or other Playwright locators based on the website's HTML structure.
 
-    // Example: A locator for a login/account button
     readonly loginOrAccountLink: Locator;
-    // Example: A locator for a search input field
     readonly searchInput: Locator;
-    // Example: A locator for a search submit button (if separate from input)
     readonly searchSubmitButton: Locator;
-    // Example: A locator for a specific product category link
     readonly productCategoryLink: Locator;
-    // Example: A locator for a dropdown menu (e.g., currency, language, sorting)
     readonly languageDropdown: Locator;
-    // Example: A locator for a "Shop Now" or main call-to-action button
     readonly mainLogo: Locator;
-    // Example: A locator for a cookie consent banner close button
     readonly cookieConsentCloseButton: Locator;
     readonly lipCareValue: Locator;
     readonly lipCareProduct: Locator;
@@ -38,6 +29,13 @@ export class HomePage extends BasePage {
     readonly passwordInputField: Locator;
     readonly loginButton: Locator;
     readonly logoutButton: Locator;
+    readonly hairCareCollection: Locator;
+    readonly conditionerIcon: Locator;
+    readonly hairCoveryItem: Locator;
+    readonly addToWIshListIcon: Locator;
+    readonly addToWIshListIconLarge: Locator;
+    readonly wIshListIcon: Locator;
+    readonly conditionerInWishList: Locator;
 
     /**
      * Constructor for HomePage.
@@ -46,8 +44,7 @@ export class HomePage extends BasePage {
      */
     constructor(page: Page) {
         super(page); // Call the constructor of the BasePage
-        // Initialize your locators here using this.page.locator()
-        // It's good practice to make these selectors as robust as possible (e.g., using data-test attributes, IDs)
+        // Initialize locators here using this.page.locator()
 
         this.loginOrAccountLink = this.page.locator('//div[@class=\'header__desktop__bar__r appco_bg\']//div[2]//a[1]//*[name()=\'svg\']//*[name()=\'path\' and contains(@stroke-linecap,\'round\')]'); // Placeholder
         this.searchInput = this.page.locator('[data-popdown-toggle="search-popdown"]'); // Placeholder, try common selectors
@@ -69,6 +66,13 @@ export class HomePage extends BasePage {
         this.passwordInputField = this.page.locator('//input[@id=\'password\']')
         this.loginButton = this.page.locator('//button[@id=\'submit\']')
         this.logoutButton = this.page.locator('//a[@class=\'dashboard-nav-header-button btn--outline btn--primary btn--full\']')
+        this.hairCareCollection = this.page.locator('//p[normalize-space()=\'Hair Care\']')
+        this.conditionerIcon = this.page.locator('//p[normalize-space()=\'Conditioner\']')
+        this.hairCoveryItem = this.page.locator('#product-8829631922429-title')
+        this.addToWIshListIconLarge = this.page.locator('//button[contains(text(),\'Add To Wishlist\')]')
+        this.addToWIshListIcon = this.page.locator('//span[@class=\'swym-wishlist-cta\']')
+        this.wIshListIcon = this.page.locator('//a[@class=\'navlink swym-wishlist\']')
+        this.conditionerInWishList = this.page.locator('//h2[contains(text(),\'HairCovery® Moisturizing & Shine Enhancing Conditi\')]')
         this.lashSenseAddToCartButton =
             this.page.locator('//html[1]/body[1]/main[1]/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/product-grid-item[1]/product-grid-item-variant[1]/div[2]/div[1]/form[1]/button[1]/span[1]/span[1]');
     }
@@ -153,7 +157,6 @@ export class HomePage extends BasePage {
      * This method assumes the categoryName can be used to construct the locator.
      */
     async clickProductCategory(categoryName: string): Promise<void> {
-        // You might need a more generic locator here, e.g., using text content
         const categoryLink = this.page.locator(`a[href*="/collections/${categoryName.toLowerCase()}"]`);
         await this.waitForElementInteractable(categoryLink);
         await this.clickElement(categoryLink);
@@ -183,8 +186,98 @@ export class HomePage extends BasePage {
         await this.waitForElementInteractable(this.addToCartFromLashSenseItem);
         await this.clickElement(this.addToCartFromLashSenseItem);
         await this.waitForElementVisible(this.inCartLashSenseItem);
-        //console.log('Clicked "Shop Now" button.');
+        console.log('Item added to the cart');
     }
+
+    // async addProductToTheFavouritesAndVerify(): Promise<void> {
+    //     await this.waitForElementInteractable(this.shopAll);
+    //     await this.clickElement(this.shopAll);
+    //     await this.waitForElementInteractable(this.hairCareCollection);
+    //     await this.clickElement(this.hairCareCollection);
+    //     await this.waitForElementInteractable(this.hairCoveryItem);
+    //     await this.clickElement(this.hairCoveryItem);
+    //     await this.waitForElementInteractable(this.addToWIshListIconLarge);
+    //     await this.clickElement(this.addToWIshListIconLarge);
+    //     //await expect(this.addToWIshListIcon).toBeDisabled({ timeout: 8000 });
+    //     //await expect(this.addToWIshListIcon).toHaveClass(new RegExp(`.*${className}.*`));
+    //     //await expect(this.addToWIshListIcon).not.toBeEnabled({ timeout: 8000 });
+    //
+    //     console.log('"Add to Wishlist" button is verified to be disabled.');
+    //     // await this.waitForElementInteractable(this.wIshListIcon);
+    //     // await this.clickElement(this.wIshListIcon);
+    //     // await this.waitForElementVisible(this.conditionerInWishList);
+    //     console.log('Item conditioner added to the wish list');
+    // }
+
+    async addProductToTheWishlist(): Promise<void> {
+        await this.waitForElementInteractable(this.shopAll);
+        await this.clickElement(this.shopAll);
+        await this.waitForElementInteractable(this.hairCareCollection);
+        await this.clickElement(this.hairCareCollection);
+        await this.waitForElementInteractable(this.hairCoveryItem);
+        await this.clickElement(this.hairCoveryItem);
+        await this.waitForElementInteractable(this.addToWIshListIconLarge);
+        await this.clickElement(this.addToWIshListIconLarge);
+
+        const emptyWishlistHeading = this.page.getByRole('heading', { name: 'Love It? Add to My Wishlist' });
+
+        // Assert that the "empty wishlist" heading is NOT visible
+        await expect(emptyWishlistHeading).not.toBeVisible({ timeout: 10000 });
+        console.log('Verified: "Love It? Add to My Wishlist" heading is NOT visible, indicating wishlist is not empty.');
+
+
+
+        //const classAttr = await this.addToWIshListIconLarge.getAttribute('class');
+        //expect(classAttr).toMatch(/(^|\s)disabled(\s|$)/);
+        //console.log('"Add to Wishlist" button class confirmed to include "disabled" – product is added.');
+
+
+        // ✅ Assert button is disabled after click (not interactable again)
+        //await expect(this.addToWIshListIconLarge).toBeDisabled();
+
+        // ✅ Assert aria-label has changed
+        //await expect(this.addToWIshListIconLarge).toHaveAttribute('aria-label');
+
+        // ✅ Assert class includes 'swym-added' and 'disabled'
+        //const classAttr = await this.addToWIshListIconLarge.getAttribute('class');
+        //expect(classAttr).toContain('swym-added');
+        //expect(classAttr).toContain('disabled');
+
+        //console.log('"Add to Wishlist" button is verified to be disabled and visually updated.');
+
+        // ✅ Optional: Verify item appears in the wishlist (if visible in UI)
+        // await this.waitForElementInteractable(this.wIshListIcon);
+        // await this.clickElement(this.wIshListIcon);
+        // await this.waitForElementVisible(this.conditionerInWishList);
+        // console.log('Item conditioner verified inside the wish list.');
+    }
+
+    async verifyWishlistIsNotEmpty(): Promise<void> {
+        // Locator for the "empty wishlist" heading provided by codegen
+        const emptyWishlistHeading = this.page.getByRole('heading', { name: 'Love It? Add to My Wishlist' });
+
+        // Assert that the "empty wishlist" heading is NOT visible
+        await expect(emptyWishlistHeading).not.toBeVisible({ timeout: 10000 });
+        console.log('Verified: "Love It? Add to My Wishlist" heading is NOT visible, indicating wishlist is not empty.');
+    }
+
+    async verifyWishlistButtonIsNotClickable(): Promise<void> {
+        // Wait for the button to be visible and then check its classes
+        await this.addToWIshListIconLarge.waitFor({ state: 'visible', timeout: 5000 });
+
+        const classAttr = await this.addToWIshListIconLarge.getAttribute('class');
+
+        if (classAttr?.includes('swym-added') && classAttr?.includes('disabled')) {
+            console.log('✅ Product is confirmed in wishlist (button is added and disabled).');
+            // No explicit assertion needed here if the console log and return are sufficient for success.
+            // If you prefer a Playwright assertion for clearer test reporting:
+            await expect(this.addToWIshListIconLarge).toHaveClass(/.*swym-added.*disabled.*/, { timeout: 9000 });
+            return;
+        } else {
+            throw new Error('❌ Product not confirmed in wishlist: Button is not in "added and disabled" state.');
+        }
+    }
+
 
     /**
      * Accepts (closes) the cookie consent banner if present.

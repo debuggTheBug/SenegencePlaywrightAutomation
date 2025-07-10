@@ -118,14 +118,18 @@ test.describe('SeneGence Shopify Homepage', () => {
 
   test('Verify that user is able to login and logout', async () => {
     await homePage.loginWithValidCredentialsAndLogout();
-    // Optional: Add more assertions to check search results content
     //console.log('');
   });
 
   test('Verify that user is able to add Product to Cart from Shop All', async () => {
     await homePage.clickShopAllAndAddProductToTheCart();
-    // Optional: Add more assertions to check search results content
     console.log('LashSense product successfully added to Cart');
+  });
+
+  test('Verify that user is able to add Product to Wish list', async () => {
+    await homePage.addProductToTheWishlist();
+    //await homePage.verifyWishlistButtonIsNotClickable()
+    //console.log('Hair product successfully added to Wish list');
   });
 
   // test('should be able to select a category and navigate', async () => {
