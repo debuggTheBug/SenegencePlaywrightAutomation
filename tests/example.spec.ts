@@ -116,6 +116,11 @@ test.describe('SeneGence Shopify Homepage', () => {
     console.log('Lip Care product successfully clicked');
   });
 
+  test('Verify that user is able to register', async () => {
+    await homePage.registerNewUser("paracelzus.nemanja+1@gmail.com");
+    //console.log('');
+  });
+
   test('Verify that user is able to login and logout', async () => {
     await homePage.loginWithValidCredentialsAndLogout();
     //console.log('');

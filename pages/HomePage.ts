@@ -36,6 +36,12 @@ export class HomePage extends BasePage {
     readonly addToWIshListIconLarge: Locator;
     readonly wIshListIcon: Locator;
     readonly conditionerInWishList: Locator;
+    readonly createAccountButtonText: Locator;
+    readonly firstName: Locator;
+    readonly lastName: Locator;
+    readonly registerEmail: Locator;
+    readonly registerPassword: Locator;
+    readonly createAccountButton: Locator;
 
     /**
      * Constructor for HomePage.
@@ -73,6 +79,12 @@ export class HomePage extends BasePage {
         this.addToWIshListIcon = this.page.locator('//span[@class=\'swym-wishlist-cta\']')
         this.wIshListIcon = this.page.locator('//a[@class=\'navlink swym-wishlist\']')
         this.conditionerInWishList = this.page.locator('//h2[contains(text(),\'HairCovery® Moisturizing & Shine Enhancing Conditi\')]')
+        this.createAccountButtonText = this.page.locator('//a[normalize-space()=\'Create account\']')
+        this.firstName = this.page.locator('//input[@id=\'FirstName\']')
+        this.lastName = this.page.locator('//input[@id=\'LastName\']')
+        this.registerEmail = this.page.locator('//input[@id=\'Email\']')
+        this.registerPassword = this.page.locator('//input[@id=\'CreatePassword\']')
+        this.createAccountButton = this.page.locator('//button[normalize-space()=\'Create\']')
         this.lashSenseAddToCartButton =
             this.page.locator('//html[1]/body[1]/main[1]/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/product-grid-item[1]/product-grid-item-variant[1]/div[2]/div[1]/form[1]/button[1]/span[1]/span[1]');
     }
@@ -87,6 +99,23 @@ export class HomePage extends BasePage {
         // Optional: Add a wait for a key element on the home page to ensure it's loaded
         await this.waitForElementVisible(this.mainLogo); // Wait for the main button to be visible
         console.log('Navigated to homepage.');
+    }
+
+    async registerNewUser(mail: string): Promise<void> {
+        await this.waitForElementInteractable(this.loginIcon, 5000);
+        await this.clickElement(this.loginIcon)
+        await this.waitForElementInteractable(this.createAccountButtonText, 5000);
+        await this.clickElement(this.createAccountButtonText)
+        await this.fillInput(this.firstName, "Jim");
+        await this.fillInput(this.lastName, "Carey");
+        await this.fillInput(this.registerEmail, mail);
+        await this.fillInput(this.registerPassword, "Koliko1994#");
+        await this.clickElement(this.createAccountButton);
+        await this.waitForElementInteractable(this.loginIcon, 8000);
+        await this.clickElement(this.loginIcon)
+        await this.waitForElementVisible(this.logoutButton);
+        await this.clickElement(this.logoutButton);
+        //console.log('Clicked Login/Account link.');
     }
 
     /**
