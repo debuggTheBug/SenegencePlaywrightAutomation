@@ -1,0 +1,13 @@
+Navigated to: https://dev-shopify.senegence.com/
+Element with locator 'locator('//div[@class=\'header__desktop__bar__l appco_bg\']//img[@alt=\'SeneGence - Dev\']')' is visible.
+Navigated to homepage.
+Element with locator 'locator('//span[@class="navtext" and text()="Shop All"]')' is interactable.
+Clicked element with locator: 'locator('//span[@class="navtext" and text()="Shop All"]')'
+Element with locator 'locator('//p[normalize-space()=\'Hair Care\']')' is interactable.
+Clicked element with locator: 'locator('//p[normalize-space()=\'Hair Care\']')'
+Element with locator 'locator('#product-8829631922429-title')' is interactable.
+Clicked element with locator: 'locator('#product-8829631922429-title')'
+Element with locator 'locator('//button[contains(text(),\'Add To Wishlist\')]')' is interactable.
+Clicked element with locator: 'locator('//button[contains(text(),\'Add To Wishlist\')]')'
+Verified: "Love It? Add to My Wishlist" heading is NOT visible, indicating wishlist is not empty.
+Test completed. Playwright will clean up the browser context.

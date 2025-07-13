@@ -60,6 +60,12 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    # NEW: Add permissions for the GITHUB_TOKEN
+    permissions:
+      contents: write # Required to push to the gh-pages branch
+      pages: write    # Required for GitHub Pages deployment
+      id-token: write # Required for OIDC, good practice for GitHub Actions
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -70,6 +76,8 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
+        # This step MUST succeed for the playwright-report/ directory to be created.
+        # If your tests are failing here, the subsequent 'Deploy' step will not find the report.
         run: npx playwright test
 
       # Step to upload the playwright-report artifact (for direct download from Actions)

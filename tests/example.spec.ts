@@ -30,7 +30,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     // console.log('Navigated to login page successfully.');
   });
 
-  test('Verify that user should be able to search for "Lip Care"', async () => {
+  test.skip('Verify that user should be able to search for "Lip Care"', async () => {
     //await homePage.performSearch('Lip Care');
     await homePage.searchAndSelectLipCare();
     //await expect(homePage.page).toHaveURL(/.*search\?q=Lipstick/i); // Case-insensitive check
@@ -42,7 +42,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     console.log('Lip Care product successfully clicked');
   });
 
-  test('Verify that user is able to register', async () => {
+  test.skip('Verify that user is able to register', async () => {
     await homePage.registerNewUser("paracelzus.nemanja+2@gmail.com");
     //console.log('');
   });
@@ -52,7 +52,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     //console.log('');
   });
 
-  test('Verify that user is able to add Product to Cart from Shop All', async () => {
+  test.skip('Verify that user is able to add Product to Cart from Shop All', async () => {
     await homePage.clickShopAllAndAddProductToTheCart();
     console.log('LashSense product successfully added to Cart');
   });

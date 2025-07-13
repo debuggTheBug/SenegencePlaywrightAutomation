@@ -1,0 +1,5 @@
+Navigated to: https://dev-shopify.senegence.com/
+Element with locator 'locator('//div[@class=\'header__desktop__bar__l appco_bg\']//img[@alt=\'SeneGence - Dev\']')' is visible.
+Navigated to homepage.
+Homepage title verified.
+Test completed. Playwright will clean up the browser context.
