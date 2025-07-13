@@ -80,6 +80,7 @@
 
 // playwright.config.ts
 import { PlaywrightTestConfig, devices } from '@playwright/test';
+import allurePlaywright from 'allure-playwright';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -108,7 +109,12 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : undefined,
 
   // Reporter to use. See https://playwright.dev/docs/test-reporters
-  reporter: 'html', // You can also use 'list', 'json', etc.
+  reporter: //'html', // You can also use 'list', 'json', etc.
+          [
+            ['list'],
+            ['html'],           // HTML report
+            ['allure-playwright'], // Allure report
+  ],
 
   // Shared settings for all projects. See https://playwright.dev/docs/api/class-testoptions.
   use: {
@@ -116,7 +122,7 @@ const config: PlaywrightTestConfig = {
     baseURL: 'https://dev-shopify.senegence.com/',
 
     // Headless mode for browsers. Set to false to see the browser UI.
-    headless: true,
+    headless: false,
 
     // Browser to use. 'chromium' is specified as requested.
     browserName: 'chromium',

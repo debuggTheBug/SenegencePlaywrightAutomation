@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","18044","Verify that user is able to login and logout","chromium","Sat Jul 12 15:35:49 CEST 2025","passed","Sat Jul 12 15:36:07 CEST 2025","SeneGence Shopify Homepage","example.spec.ts","",""
