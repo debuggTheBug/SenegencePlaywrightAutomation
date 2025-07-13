@@ -1,79 +1,97 @@
-## .github/workflows/playwright.yml
 #name: Playwright Tests
 #
 #on:
 #  schedule:
-#    # Run every day at 1 AM UTC
-#    - cron: '0 1 * * *'
-#  workflow_dispatch: # Add this line to enable manual trigger
+#    - cron: '0 1 * * *' # Runs at 1 AM UTC daily
+#  workflow_dispatch: # Allows manual run from GitHub UI
 #
 #jobs:
 #  test:
 #    timeout-minutes: 60
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v4
-#      - uses: actions/setup-node@v4
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
 #        with:
 #          node-version: lts/*
+#          cache: 'npm'
+#
 #      - name: Install dependencies
 #        run: npm ci
+#
 #      - name: Install Playwright Browsers
 #        run: npx playwright install --with-deps
-#      - name: Run Playwright tests
-#        run: npx playwright test
-#      - uses: actions/upload-artifact@v4
+#
+#      - name: Run Playwright tests with reporters
+#        run: npx playwright test --reporter=list,html,allure-playwright
+#
+#      - name: Generate Allure Report
+#        run: npx allure generate allure-results -o allure-report --clean
+#
+#      # Optional: Upload Playwright's HTML report as artifact
+#      - name: Upload Playwright HTML report
+#        uses: actions/upload-artifact@v4
 #        if: ${{ !cancelled() }}
 #        with:
-#          name: playwright-report
+#          name: playwright-html-report
 #          path: playwright-report/
 #          retention-days: 30
+#
+#      # Upload Allure report to GitHub Pages
+#      - name: Deploy Allure Report to GitHub Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./allure-report
 
+# .github/workflows/playwright.yml
 name: Playwright Tests
 
 on:
   schedule:
-    - cron: '0 1 * * *' # Runs at 1 AM UTC daily
-  workflow_dispatch: # Allows manual run from GitHub UI
+    # Run every day at 1 AM UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch: # This allows manual triggering from the GitHub UI
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm'
-
       - name: Install dependencies
         run: npm ci
-
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
 
-      - name: Run Playwright tests with reporters
-        run: npx playwright test --reporter=list,html,allure-playwright
-
-      - name: Generate Allure Report
-        run: npx allure generate allure-results -o allure-report --clean
-
-      # Optional: Upload Playwright's HTML report as artifact
-      - name: Upload Playwright HTML report
+      # Step to upload the playwright-report artifact (for direct download from Actions)
+      - name: Upload Playwright Report Artifact
+        if: always() # Always upload, even if tests fail
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
         with:
           name: playwright-html-report
-          path: playwright-report/
+          path: playwright-report/ # Playwright's default HTML report output directory
           retention-days: 30
 
-      # Upload Allure report to GitHub Pages
-      - name: Deploy Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # NEW STEP: Deploy Playwright HTML Report to GitHub Pages
+      # This step will take the generated HTML report and push it to the 'gh-pages' branch
+      # which GitHub Pages can then serve.
+      - name: Deploy to GitHub Pages
+        if: always() # Changed from 'success()' to 'always()' to deploy report even if tests fail
+        uses: peaceiris/actions-gh-pages@v3 # Using v3, as it's stable and widely used
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
+          github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub's built-in token for actions
+          publish_dir: ./playwright-report # The directory containing your HTML report
+          publish_branch: gh-pages # The branch where the report will be pushed
+          # You can also use 'docs' folder on your 'dev' branch if you prefer:
+          # publish_dir: ./playwright-report
+          # publish_branch: dev
+          # destination_dir: docs/playwright-reports # This would put it in /docs/playwright-reports/ on the dev branch
