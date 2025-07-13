@@ -122,7 +122,7 @@ const config: PlaywrightTestConfig = {
     baseURL: 'https://dev-shopify.senegence.com/',
 
     // Headless mode for browsers. Set to false to see the browser UI.
-    headless: false,
+    headless: true,
 
     // Browser to use. 'chromium' is specified as requested.
     browserName: 'chromium',

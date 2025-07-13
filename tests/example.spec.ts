@@ -30,7 +30,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     // console.log('Navigated to login page successfully.');
   });
 
-  test.skip('Verify that user should be able to search for "Lip Care"', async () => {
+  test('Verify that user should be able to search for "Lip Care"', async () => {
     //await homePage.performSearch('Lip Care');
     await homePage.searchAndSelectLipCare();
     //await expect(homePage.page).toHaveURL(/.*search\?q=Lipstick/i); // Case-insensitive check
@@ -43,7 +43,7 @@ test.describe('SeneGence Shopify Homepage', () => {
   });
 
   test('Verify that user is able to register', async () => {
-    await homePage.registerNewUser("paracelzus.nemanja+1@gmail.com");
+    await homePage.registerNewUser("paracelzus.nemanja+2@gmail.com");
     //console.log('');
   });
 
