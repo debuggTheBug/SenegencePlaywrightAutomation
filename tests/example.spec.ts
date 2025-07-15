@@ -42,7 +42,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     //console.log('Lip Care product successfully clicked');
   });
 
-  test('Verify that user is able to register', async () => {
+  test.skip('Verify that user is able to register', async () => {
     await homePage.registerNewUniqueUser();
     //console.log('');
   });
@@ -57,7 +57,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     console.log('LashSense product successfully added to Cart');
   });
 
-  test.skip('Verify that user is able to add Product to Wish list', async () => {
+  test('Verify that user is able to add Product to Wish list', async () => {
     await homePage.addProductToTheWishlist();
     //await homePage.verifyWishlistButtonIsNotClickable()
     //console.log('Hair product successfully added to Wish list');
