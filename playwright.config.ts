@@ -92,7 +92,7 @@ const config: PlaywrightTestConfig = {
   outputDir: './test-results',
 
   // Maximum time one test can run for.
-  timeout: 200 * 1000, // 200 seconds
+  timeout: 180 * 1000, // 180 seconds
 
   // Expect timeout for assertions.
   expect: {

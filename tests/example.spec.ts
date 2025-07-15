@@ -30,7 +30,7 @@ test.describe('SeneGence Shopify Homepage', () => {
     // console.log('Navigated to login page successfully.');
   });
 
-  test.skip('Verify that user should be able to search for "Lip Care"', async () => {
+  test('Verify that user should be able to search for "Lip Care"', async () => {
     //await homePage.performSearch('Lip Care');
     await homePage.searchAndSelectLipCare();
     //await expect(homePage.page).toHaveURL(/.*search\?q=Lipstick/i); // Case-insensitive check
@@ -38,12 +38,12 @@ test.describe('SeneGence Shopify Homepage', () => {
     //const searchResultsHeader = homePage.page.locator('h1:has-text("Search results for")');
     //await expect(searchResultsHeader).toBeVisible();
     console.log('Search for "Lip Care" performed and verified.');
-    await homePage.clickOnProduct()
-    console.log('Lip Care product successfully clicked');
+    //await homePage.clickOnProduct()
+    //console.log('Lip Care product successfully clicked');
   });
 
-  test.skip('Verify that user is able to register', async () => {
-    await homePage.registerNewUser("paracelzus.nemanja+2@gmail.com");
+  test('Verify that user is able to register', async () => {
+    await homePage.registerNewUniqueUser();
     //console.log('');
   });
 

@@ -42,6 +42,8 @@ export class HomePage extends BasePage {
     readonly registerEmail: Locator;
     readonly registerPassword: Locator;
     readonly createAccountButton: Locator;
+    readonly searchIcon: Locator;
+    readonly linkWhenSearchIsEmpty: Locator;
 
     /**
      * Constructor for HomePage.
@@ -53,25 +55,27 @@ export class HomePage extends BasePage {
         // Initialize locators here using this.page.locator()
 
         this.loginOrAccountLink = this.page.locator('//div[@class=\'header__desktop__bar__r appco_bg\']//div[2]//a[1]//*[name()=\'svg\']//*[name()=\'path\' and contains(@stroke-linecap,\'round\')]'); // Placeholder
-        this.searchInput = this.page.locator('[data-popdown-toggle="search-popdown"]'); // Placeholder, try common selectors
+        //this.searchInput = this.page.locator('[data-popdown-toggle="search-popdown"]');
+        this.searchInput = this.page.locator('//div[@id=\'search-popdown\']//input[@placeholder=\'Search...\']');
         this.lipCareValue = this.page.locator('//li[@id=\'snize-category-0\']')//#snize-category-0
-        this.searchSubmitButton = this.page.locator('button[type="submit"][aria-label="Search"]'); // Placeholder
+        this.searchSubmitButton = this.page.locator('button[type="submit"][aria-label="Search"]');
         this.productCategoryLink = this.page.locator('a[href="/collections/lips"]'); // Example: Link to 'Lips' category
         this.languageDropdown = this.page.locator('select[name="language"]'); // Example: A select dropdown
-        this.mainLogo = this.page.locator('//div[@class=\'header__desktop__bar__l appco_bg\']//img[@alt=\'SeneGence - Dev\']'); // Placeholder for a button with text "Shop Now"
-        this.cookieConsentCloseButton = this.page.locator('button:has-text("Accept all cookies")'); // Placeholder for cookie banner
+        this.mainLogo = this.page.locator('//div[@class=\'header__desktop__bar__l appco_bg\']//img[@alt=\'SeneGence - Dev\']');
+        this.cookieConsentCloseButton = this.page.locator('button:has-text("Accept all cookies")');
         this.lipCareProduct = this.page.locator('#product-8829629923581-title');
         this.shopAll = this.page.locator('//span[@class="navtext" and text()="Shop All"]');
         this.eyesCollection = this.page.locator('//p[normalize-space()=\'Eyes\']');
         this.lashSenseItem = this.page.locator('//p[@id=\'product-8829633757437-title\']');
         this.addToCartFromLashSenseItem = this.page.locator('//span[normalize-space()=\'Add to Cart\']');
         this.inCartLashSenseItem = this.page.locator('//a[normalize-space()=\'LashSense® Blooming Bond Lash Adhesive\']');
-        //this.loginIcon = this.page.locator('div[class=\'header__desktop__button main-menu--active appco_bg\'] a[class=\'navlink\'] svg');
+        this.searchIcon = this.page.locator('//a[@data-popdown-toggle=\'search-popdown\']//*[name()=\'svg\']');
         this.loginIcon = this.page.locator('a[href="/account"].navlink');
         this.emailInputField = this.page.locator('//input[@id=\'CustomerEmail\']')
         this.passwordInputField = this.page.locator('//input[@id=\'password\']')
         this.loginButton = this.page.locator('//button[@id=\'submit\']')
-        this.logoutButton = this.page.locator('//a[@class=\'dashboard-nav-header-button btn--outline btn--primary btn--full\']')
+        //this.logoutButton = this.page.locator('//span[contains(.,\'Log out\')]')
+        this.logoutButton = page.getByRole('link', { name: 'Log out' });
         this.hairCareCollection = this.page.locator('//p[normalize-space()=\'Hair Care\']')
         this.conditionerIcon = this.page.locator('//p[normalize-space()=\'Conditioner\']')
         this.hairCoveryItem = this.page.locator('#product-8829631922429-title')
@@ -85,6 +89,7 @@ export class HomePage extends BasePage {
         this.registerEmail = this.page.locator('//input[@id=\'Email\']')
         this.registerPassword = this.page.locator('//input[@id=\'CreatePassword\']')
         this.createAccountButton = this.page.locator('//button[normalize-space()=\'Create\']')
+        this.linkWhenSearchIsEmpty = this.page.locator('//a[@class=\'snize-link-home\']')
         this.lashSenseAddToCartButton =
             this.page.locator('//html[1]/body[1]/main[1]/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/product-grid-item[1]/product-grid-item-variant[1]/div[2]/div[1]/form[1]/button[1]/span[1]/span[1]');
     }
@@ -163,20 +168,27 @@ export class HomePage extends BasePage {
         console.log('Clicked search icon to open the search popdown.');
 
         // Locate the actual search input that appears
-        const searchInput = this.page.locator('#search-popdown input[type="search"]');
-        await searchInput.waitFor({ state: 'visible' });
-        await searchInput.fill('Lip Ca');
+        //const searchInput = this.page.locator('#search-popdown input[type="search"]');
+        // const searchInput = this.page.locator('//a[@data-popdown-toggle=\'search-popdown\']//*[name()=\'svg\']');
+        // await searchInput.waitFor({ state: 'visible' });
+        await this.waitForElementInteractable(this.searchIcon);
+        await this.fillInput(this.searchInput, 'Lip care');
+        await this.page.press('//div[@id=\'search-popdown\']//input[@placeholder=\'Search...\']', 'Enter')
+        await expect(this.linkWhenSearchIsEmpty).toHaveCount(0);
+
         console.log('Filled search input with "Lip Care".');
 
         // Wait for the "Lip Care" suggestion to appear and click it
-        const lipCareSuggestion = this.page.locator('#snize-category-0');
-        await lipCareSuggestion.waitFor({ state: 'visible' });
-        await lipCareSuggestion.click();
-        console.log('Clicked on "Lip Care" suggestion.');
+        // const lipCareSuggestion = this.page.locator('//li[@id=\'snize-suggestion-0\']');
+        // await lipCareSuggestion.waitFor({ state: 'visible' });
+        // await lipCareSuggestion.click();
+        // console.log('Clicked on "Lip Care" suggestion.');
+
+
     }
 
     async clickOnProduct() {
-        await this.lipCareProduct.waitFor({ state: 'visible' });
+        await this.waitForElementInteractable(this.lipCareProduct, 5000);
         await this.lipCareProduct.click();
     }
 
@@ -306,6 +318,76 @@ export class HomePage extends BasePage {
             throw new Error('❌ Product not confirmed in wishlist: Button is not in "added and disabled" state.');
         }
     }
+
+    // This helper function can be placed outside the class or as a private method within your Page Object.
+// For simplicity, let's assume it's a private method or a utility function in the same file.
+
+// Example of a private helper method within your HomePage.ts (or RegistrationPage.ts) class:
+// private generateUniqueEmail(): string {
+//     const timestamp = new Date().getTime();
+//     // You can use a timestamp, a random string, or a combination.
+//     // Using a timestamp is simple and usually unique enough for test purposes.
+//     return `testuser_${timestamp}@example.com`; // Use a reliable dummy domain
+// }
+
+// If you prefer a standalone utility function (e.g., in utils/testData.ts):
+// export function generateUniqueEmail(): string {
+//     const timestamp = new Date().getTime();
+//     return `testuser_${timestamp}@example.com`;
+// }
+
+// Then, in your HomePage.ts:
+// import { generateUniqueEmail } from '../utils/testData'; // If using a utility file
+
+    /**
+     * Registers a new user with dynamically generated email.
+     * This method simulates a real user registration scenario by ensuring unique test data.
+     * @returns {Promise<string>} The unique email address used for registration.
+     */
+    async registerNewUniqueUser(): Promise<string> {
+        // Generate a unique email address for this test run
+        const uniqueEmail = `testuser_${new Date().getTime()}@example.com`; // Inline generation for simplicity
+
+        // 1. Navigate to the login/account page
+        await this.waitForElementInteractable(this.loginIcon, 5000);
+        await this.clickElement(this.loginIcon);
+
+        // 2. Click the "Create Account" button
+        await this.waitForElementInteractable(this.createAccountButtonText, 5000);
+        await this.clickElement(this.createAccountButtonText);
+
+        // 3. Fill in the registration form with dynamic email and static data
+        await this.fillInput(this.firstName, "Jim"); // Consider making these dynamic too if needed
+        await this.fillInput(this.lastName, "Carey");
+        await this.fillInput(this.registerEmail, uniqueEmail);
+        await this.fillInput(this.registerPassword, "Koliko1994#"); // Consider making this a parameter for reusability
+        await this.page.waitForTimeout(8000);
+        // 4. Submit the registration form
+        await this.clickElement(this.createAccountButton);
+        await this.page.waitForTimeout(8000); // waits for 3000 milliseconds (3 seconds)
+        // --- IMPORTANT: Add an assertion here to confirm successful registration ---
+        // Before attempting to log out, ensure the registration actually succeeded.
+        // Example: Verify URL changed to account dashboard, or a success message is visible.
+        //await expect(this.page).toHaveURL(/.*\/account/); // Assuming successful registration redirects to /account
+        // Or: await expect(this.page.locator('text="Welcome to your account"')).toBeVisible();
+        console.log(`Registered new user with email: ${uniqueEmail}`);
+
+        // 5. Logout the newly registered user (to ensure a clean state for subsequent tests)
+        // This assumes clicking loginIcon again reveals a logout option when logged in.
+        await this.waitForElementInteractable(this.loginIcon, 8000); // Wait for the user icon to be interactable after login
+        await this.clickElement(this.loginIcon); // Click the logged-in user icon to reveal logout option
+        //await this.page.getByRole('link', { name: 'My Account' }).click();
+
+        //await this.page.getByRole('link', { name: 'My Account' }).click();
+
+        await this.waitForElementInteractable(this.logoutButton, 8000); // Wait for the logout button to become visible
+        await this.clickElement(this.logoutButton);
+        console.log(`Logged out user: ${uniqueEmail}`);
+
+        // Return the unique email, which can be used in subsequent login tests
+        return uniqueEmail;
+    }
+
 
 
     /**
