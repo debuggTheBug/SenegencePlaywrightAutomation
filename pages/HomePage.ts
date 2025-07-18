@@ -46,6 +46,8 @@ export class HomePage extends BasePage {
     readonly linkWhenSearchIsEmpty: Locator;
     readonly makeupTopNavLink: Locator;
     readonly mascaraSubCategory: Locator
+    readonly checkOutButton: Locator
+    readonly addressInputField: Locator
 
     /**
      * Constructor for HomePage.
@@ -64,7 +66,6 @@ export class HomePage extends BasePage {
         this.productCategoryLink = this.page.locator('a[href="/collections/lips"]'); // Example: Link to 'Lips' category
         this.languageDropdown = this.page.locator('select[name="language"]'); // Example: A select dropdown
         this.mainLogo = this.page.locator('//div[@class=\'header__desktop__bar__l appco_bg\']//img[@alt=\'SeneGence - Dev\']');
-        this.cookieConsentCloseButton = this.page.locator('button:has-text("Accept all cookies")');
         this.lipCareProduct = this.page.locator('#product-8829629923581-title');
         this.shopAll = this.page.locator('//span[@class="navtext" and text()="Shop All"]');
         this.eyesCollection = this.page.locator('//p[normalize-space()=\'Eyes\']');
@@ -94,6 +95,8 @@ export class HomePage extends BasePage {
         this.linkWhenSearchIsEmpty = this.page.locator('//a[@class=\'snize-link-home\']')
         this.makeupTopNavLink = this.page.locator('a[data-top-link] .navtext', { hasText: 'Makeup' }).first();
         this.mascaraSubCategory = this.page.locator('span', { hasText: 'Mascara' });
+        this.checkOutButton = this.page.locator('//button[@name=\'checkout\']');
+        this.addressInputField = this.page.locator('//input[@id=\'shipping-address1\']');
         this.lashSenseAddToCartButton =
             this.page.locator('//html[1]/body[1]/main[1]/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/product-grid-item[1]/product-grid-item-variant[1]/div[2]/div[1]/form[1]/button[1]/span[1]/span[1]');
     }
@@ -231,6 +234,10 @@ export class HomePage extends BasePage {
         await this.waitForElementInteractable(this.addToCartFromLashSenseItem);
         await this.clickElement(this.addToCartFromLashSenseItem);
         await this.waitForElementVisible(this.inCartLashSenseItem);
+        await this.waitForElementInteractable(this.checkOutButton)
+        await this.clickElement(this.checkOutButton)
+        await this.waitForElementInteractable(this.addressInputField)
+        await this.fillInput(this.checkOutButton, "")
         console.log('Item added to the cart');
     }
 
