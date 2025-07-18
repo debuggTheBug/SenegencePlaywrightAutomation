@@ -44,6 +44,8 @@ export class HomePage extends BasePage {
     readonly createAccountButton: Locator;
     readonly searchIcon: Locator;
     readonly linkWhenSearchIsEmpty: Locator;
+    readonly makeupTopNavLink: Locator;
+    readonly mascaraSubCategory: Locator
 
     /**
      * Constructor for HomePage.
@@ -90,6 +92,8 @@ export class HomePage extends BasePage {
         this.registerPassword = this.page.locator('//input[@id=\'CreatePassword\']')
         this.createAccountButton = this.page.locator('//button[normalize-space()=\'Create\']')
         this.linkWhenSearchIsEmpty = this.page.locator('//a[@class=\'snize-link-home\']')
+        this.makeupTopNavLink = this.page.locator('a[data-top-link] .navtext', { hasText: 'Makeup' }).first();
+        this.mascaraSubCategory = this.page.locator('span', { hasText: 'Mascara' });
         this.lashSenseAddToCartButton =
             this.page.locator('//html[1]/body[1]/main[1]/div[6]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/product-grid-item[1]/product-grid-item-variant[1]/div[2]/div[1]/form[1]/button[1]/span[1]/span[1]');
     }
@@ -230,25 +234,31 @@ export class HomePage extends BasePage {
         console.log('Item added to the cart');
     }
 
-    // async addProductToTheFavouritesAndVerify(): Promise<void> {
-    //     await this.waitForElementInteractable(this.shopAll);
-    //     await this.clickElement(this.shopAll);
-    //     await this.waitForElementInteractable(this.hairCareCollection);
-    //     await this.clickElement(this.hairCareCollection);
-    //     await this.waitForElementInteractable(this.hairCoveryItem);
-    //     await this.clickElement(this.hairCoveryItem);
-    //     await this.waitForElementInteractable(this.addToWIshListIconLarge);
-    //     await this.clickElement(this.addToWIshListIconLarge);
-    //     //await expect(this.addToWIshListIcon).toBeDisabled({ timeout: 8000 });
-    //     //await expect(this.addToWIshListIcon).toHaveClass(new RegExp(`.*${className}.*`));
-    //     //await expect(this.addToWIshListIcon).not.toBeEnabled({ timeout: 8000 });
-    //
-    //     console.log('"Add to Wishlist" button is verified to be disabled.');
-    //     // await this.waitForElementInteractable(this.wIshListIcon);
-    //     // await this.clickElement(this.wIshListIcon);
-    //     // await this.waitForElementVisible(this.conditionerInWishList);
-    //     console.log('Item conditioner added to the wish list');
-    // }
+    async addItemToCartAndCheckOut(): Promise<void> {
+        const makeupSpanByText: Locator = this.page.getByText('Makeup');
+
+        await this.waitForElementInteractable(this.loginIcon, 5000);
+        await this.clickElement(this.loginIcon);
+        await this.fillInput(this.emailInputField, "paracelzus.nemanja@gmail.com");
+        await this.fillInput(this.passwordInputField, "Koliko1994#");
+        await this.clickElement(this.loginButton);
+        // await this.waitForElementInteractable(this.makeupTopNavLink);
+        // await makeupSpanByText.hover();
+        const makeupLink = this.page.locator('//a[@href="/collections/makeup" and .//span[text()="Makeup"]]').first();
+
+        // Optional: scroll to ensure it's in view
+        //await makeupLink.scrollIntoViewIfNeeded();
+
+        // Hover over the element
+        await makeupLink.hover();
+        await this.waitForElementInteractable(this.mascaraSubCategory);
+        await this.clickElement(this.mascaraSubCategory);
+        //await expect(this.addToWIshListIcon).toBeDisabled({ timeout: 8000 });
+        //await expect(this.addToWIshListIcon).toHaveClass(new RegExp(`.*${className}.*`));
+        //await expect(this.addToWIshListIcon).not.toBeEnabled({ timeout: 8000 });
+
+        console.log('"Add to Wishlist" button is verified to be disabled.');
+    }
 
     async addProductToTheWishlist(): Promise<void> {
         await this.waitForElementInteractable(this.shopAll);

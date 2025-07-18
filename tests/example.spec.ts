@@ -63,6 +63,11 @@ test.describe('SeneGence Shopify Homepage', () => {
     //console.log('Hair product successfully added to Wish list');
   });
 
+  test('Verify that user is able to add Product to Cart and Purchase after Check out', async () => {
+    await homePage.addItemToCartAndCheckOut();
+    //console.log('Product successfully purchased');
+  });
+
   // test('should be able to select a category and navigate', async () => {
   //   // Assuming there's a category for 'Lips' which is a common product type
   //   await homePage.clickProductCategory('lips');
